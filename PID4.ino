@@ -13,7 +13,7 @@ struct PWMVALUE
 {
   int Left = 0;
   int Right = 0;
-  int base = 130;//速度基量
+  int base = 145;//速度基量
   int inc = 0; //速度增量
 };
 PWMVALUE PWM;
