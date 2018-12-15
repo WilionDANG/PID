@@ -5,7 +5,7 @@ const uint8_t pwmpin1 = 8,pwmpin2 = 13,pwmpin3 = 7,pwmpin4 = 6;
 unsigned long lastTime;
 double Input, Output, Setpoint=0;
 double errSum, lastErr;
-double kp=34, ki=0.29, kd=0;
+double kp=33, ki=0.05, kd=0;
 int SampleTime=100;
  
 double ITerm,lastInput;
@@ -13,7 +13,7 @@ struct PWMVALUE
 {
   int Left = 0;
   int Right = 0;
-  int base = 150;//速度基量
+  int base = 155;//速度基量
   int inc = 0; //速度增量
 };
 PWMVALUE PWM;
@@ -91,7 +91,7 @@ void loop() {
       }
       //break;
     };*/
-    if(count>=8)
+    if(count>=7)
     {
     b++;
     delay(100);
