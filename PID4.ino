@@ -5,7 +5,7 @@ const uint8_t pwmpin1 = 8,pwmpin2 = 13,pwmpin3 = 7,pwmpin4 = 6;
 unsigned long lastTime;
 double Input, Output, Setpoint=0;
 double errSum, lastErr;
-double kp=33, ki=0.05, kd=0;
+double kp=32, ki=0.05, kd=1;
 int SampleTime=100;
  
 double ITerm,lastInput;
@@ -13,7 +13,7 @@ struct PWMVALUE
 {
   int Left = 0;
   int Right = 0;
-  int base = 155;//速度基量
+  int base = 160;//速度基量
   int inc = 0; //速度增量
 };
 PWMVALUE PWM;
@@ -46,7 +46,7 @@ digitalWrite(40,HIGH);
 }
 
 void loop() {
-    if(b==7)
+    if(b==9)
   {
   analogWrite(8,0);//you1
     analogWrite(13,0);//zuo2
@@ -71,7 +71,7 @@ void loop() {
   input_table[14]=digitalRead(A14);
   input_table[15]=digitalRead(A15);
     //找黑线
-    for (int i=0;i<15;i++)
+    for (int i=0;i<16;i++)
     {
       if ( input_table[i]==1)
       {
@@ -82,7 +82,7 @@ void loop() {
       }
       //break;
     }
-   /* for(int k=15;k>=0;k--)
+ /*for(int k=15;k>=0;k--)
     {
      if ( input_table[k]==1)
       {
@@ -90,7 +90,11 @@ void loop() {
         x2= k - 8;
       }
       //break;
-    };*/
+    }
+     x3=abs(x1);
+     if(x3>x1)*/
+      x=x1;
+      //else x=x2;
     if(count>=7)
     {
     b++;
@@ -98,7 +102,6 @@ void loop() {
     //delay(100);
     }
      
-      x=x1;
       //if(x_last==1&&)
   if(x>2||x<-2)
    {
