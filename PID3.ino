@@ -5,7 +5,7 @@ const uint8_t pwmpin1 = 8,pwmpin2 = 13,pwmpin3 = 7,pwmpin4 = 6;
 unsigned long lastTime;
 double Input, Output, Setpoint=0;
 double errSum, lastErr;
-double kp=42, ki=0.02, kd=20;
+double kp=39, ki=0.2, kd=0;
 int SampleTime=100;
  
 double ITerm,lastInput;
@@ -13,7 +13,7 @@ struct PWMVALUE
 {
   int Left = 0;
   int Right = 0;
-  int base = 200;//速度基量
+ int base = 100;//速度基量
   int inc = 0; //速度增量
 };
 PWMVALUE PWM;
@@ -46,10 +46,19 @@ digitalWrite(40,HIGH);
 }
 
 void loop() {
-  if(b==7)
+  int a=0;
+   if(b==8)
   {
-digitalWrite(42,LOW);
-digitalWrite(24,LOW);
+    analogWrite(8,63);
+    analogWrite(13,63);
+    analogWrite(6,63);
+    analogWrite(7,63);
+    delay(600);
+  analogWrite(8,0);//you1
+    analogWrite(13,0);//zuo2
+    analogWrite(6,0);//you2
+    analogWrite(7,0);//zuo1
+    delay(10000);
   }
   input_table[0]=digitalRead(A1);
   input_table[1]=digitalRead(A2);
@@ -71,45 +80,53 @@ digitalWrite(24,LOW);
     for (int i=0;i<15;i++)
     {
       if ( input_table[i]==1)
-      {
+      { 
         //找到黑线x即误差=>用于比例计算
-        x1= i - 6;
+        x1= i - 8;
         count++;
       }
       //break;
-    };
-    for(int k=15;k>=0;k--)
+    }
+   /*  if(count>=3&&count<=5)
+    {
+      for(int i=0;i<500;i++)
+      {
+   for(int k=15;k>=0;k--)
     {
      if ( input_table[k]==1)
       {
         //找到黑线x即误差=>用于比例计算
-        x2= k - 5;
+        x2= k - 8;
       }
       //break;
-    };
-    if(count>=6)
+    }
+    }
+ 
+    }*/
+    if(count>=8)
     {
     b++;
+
     delay(100);
-    //delay(100);
     }
-    x3=abs(x1);
-    x4=abs(x2);
-    if(x3<x4)
-      x=x2;
-      else
+    
+// x3=abs(x1);
+  //  x4=abs(x2);
+    //if(x3<x4)
+      //x=x2;
+      //else
       x=x1;
       //if(x_last==1&&)
   if(x>2||x<-2)
    {
-      PWM.base=120;
+      //PWM.base=180;
       Input=x;
       Compute();
       PWM.inc=Output;
         }
    if(x>=-2&&x<=2)
     {
-       PWM.base=120;
+      //PWM.base=100;
        Input=x;
        Compute();
        PWM.inc=Output;
@@ -159,7 +176,7 @@ void Compute()
 {
    /*How long since we last calculated*/
    unsigned long now = millis();
-   if(now%500==0)
+   if(now%10==0)
     ITerm=0;
     if(now%500==0)
     lastInput=Input;
@@ -188,3 +205,4 @@ void motor2(int _speed,int in1,int in2,int PWMpin)
   digitalWrite(in2,0);
   analogWrite(PWMpin,_speed);
 }
+ 
